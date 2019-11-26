@@ -16,7 +16,7 @@ typedef struct {
     ngx_str_t       path;//where to save data
 } ngx_http_profiler_loc_conf_t;
 
-static ngx_event_t      profiler_timer;
+static ngx_event_t      *profiler_timer;
 static ngx_msec_t       freq;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
@@ -170,9 +170,9 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     if(profiler_timer == NULL){
         return NGX_ERROR;
     }    
-    profiler_timer.log = cf->log;
-    profiler_timer.data = NULL;
-    profiler_timer.handler = ngx_timer_fired;
+    profiler_timer->log = cf->log;
+    profiler_timer->data = NULL;
+    profiler_timer->handler = ngx_timer_fired;
     freq = conf->freq;
     ngx_add_timer(profiler_timer, conf->freq);
     return NGX_CONF_OK;
