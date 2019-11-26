@@ -166,16 +166,16 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 // //set timer to collect data
                 // https://gist.github.com/hiboma/2863699
                 // https://gist.github.com/samizdatco/1374529
-                profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
-                if(profiler_timer == NULL){
-                    return NGX_CONF_ERROR;
-                }    
-                profiler_timer->log = cf->log;
-                profiler_timer->data = NULL;
-                profiler_timer->handler = ngx_timer_fired;
-                frequency = 10000;  
-                ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);              
-                ngx_add_timer(profiler_timer, frequency);                
+                // profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
+                // if(profiler_timer == NULL){
+                //     return NGX_CONF_ERROR;
+                // }    
+                // profiler_timer->log = cf->log;
+                // profiler_timer->data = NULL;
+                // profiler_timer->handler = ngx_timer_fired;
+                frequency = conf->freq;  
+                // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);              
+                // ngx_add_timer(profiler_timer, frequency);                
             }
         }
     }
@@ -183,18 +183,19 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
 }
 
 ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
-    // profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
-    // if(profiler_timer == NULL){
-    //     return NGX_ERROR;
-    // }
+    profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
+    if(profiler_timer == NULL){
+        return NGX_ERROR;
+    }
     return NGX_OK;
 }
 
-ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){       
-    // profiler_timer->log = cycle->log;
-    // profiler_timer->data = NULL;
-    // profiler_timer->handler = ngx_timer_fired;
-    // frequency = 10000;                 
-    // ngx_add_timer(profiler_timer, 10000); 
+ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){ 
+    ngx_log_error(NGX_LOG_ERR, cycle->log, 0, "profiler: timer %d", frequency);        
+    profiler_timer->log = cycle->log;
+    profiler_timer->data = NULL;
+    profiler_timer->handler = ngx_timer_fired;
+    frequency = 10000;                 
+    ngx_add_timer(profiler_timer, 10000); 
     return NGX_OK;
 }
