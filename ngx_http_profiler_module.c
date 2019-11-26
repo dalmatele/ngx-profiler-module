@@ -170,7 +170,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     profiler_timer->data = NULL;
     profiler_timer->handler = ngx_timer_fired;
     frequency = conf->freq;
-    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%V'", conf->path);
+    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
     ngx_add_timer(profiler_timer, conf->freq);
     return NGX_CONF_OK;
 }
