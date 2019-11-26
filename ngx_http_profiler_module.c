@@ -4,6 +4,7 @@
 
 #include <ngx_config.h>
 #include <ngx_core.h>
+#include <ngx_http.h>
 
 static char* ngx_http_profiler(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf);
