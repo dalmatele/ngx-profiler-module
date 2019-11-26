@@ -171,7 +171,7 @@ static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
     if(conf == NULL || conf->profiler == 0){
         return NGX_ERROR;
     }
-
+    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
     //set timer to collect data
     // https://gist.github.com/hiboma/2863699
     // https://gist.github.com/samizdatco/1374529
