@@ -130,7 +130,7 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
 
 // https://www.nginx.com/resources/wiki/extending/api/event/
 void ngx_timer_fired(ngx_event_t *ev){
-    ngx_log_error(NGX_LOG_DEBUG, ev->log, 0, "Event fired!");
+    ngx_log_error(NGX_LOG_ERR, ev->log, 0, "Event fired!");
     if(ngx_exiting){
         return;
     }
