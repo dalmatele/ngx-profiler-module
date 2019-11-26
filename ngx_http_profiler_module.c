@@ -164,7 +164,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
 }
 
 static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
-    ngx_http_profiler_merge_loc_conf *conf;
+    ngx_http_profiler_loc_conf_t *conf;
 
     conf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_profiler_module);
 
