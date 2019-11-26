@@ -15,7 +15,7 @@ void ngx_timer_fired(ngx_event_t *ev);
 static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
 
 typedef struct {    
-    ngx_uint_t      profiler;
+    ngx_flag_t      profiler;
     size_t          freq;
     ngx_str_t       path;//where to save data
 } ngx_http_profiler_loc_conf_t;
@@ -176,7 +176,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     // https://gist.github.com/samizdatco/1374529
     profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
     if(profiler_timer == NULL){
-        return NGX_ERROR;
+        return NGX_CONF_ERROR;
     }    
     profiler_timer->log = cf->log;
     profiler_timer->data = NULL;
