@@ -17,6 +17,7 @@ typedef struct {
 } ngx_http_profiler_loc_conf_t;
 
 static ngx_event_t      profiler_timer;
+static ngx_msec_t       freq;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
@@ -130,6 +131,10 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
 // https://www.nginx.com/resources/wiki/extending/api/event/
 void ngx_timer_fired(ngx_event_t *ev){
     ngx_log_error(NGX_LOG_DEBUG, ev->log, 0, "Event fired!");
+    if(ngx_exiting){
+        return;
+    }
+    ngx_add_timer(ev, freq);
 }
 
 static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf){
@@ -161,5 +166,8 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     //set timer to collect data
     profiler_timer.handler = ngx_timer_fired;
     profiler_timer.log = cf->log;
+    profiler_timer.data = NULL;
+    freq = conf->freq;
+    ngx_add_timer(profiler_timer, conf->freq);
     return NGX_CONF_OK;
 }
