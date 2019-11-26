@@ -15,7 +15,7 @@ void ngx_timer_fired(ngx_event_t *ev);
 static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle);
 ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf);
-static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf)
+static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf);
 
 typedef struct {    
     ngx_flag_t      profiler;
