@@ -111,7 +111,7 @@ static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r){
 static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *path){    
     ngx_file_info_t                 fi;
     static u_char                   zpath[NGX_MAX_PATH + 1];
-    ngx_set_errno(0);
+    // ngx_set_errno(0);
     if(path->len + 1 > sizeof(zpath)){
         ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: too long path: %s", path->data);
         return NGX_ERROR;
@@ -119,11 +119,11 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
     ngx_snprintf(zpath, sizeof(zpath), "%V%Z", path);
     if(ngx_file_info(zpath, &fi) == NGX_FILE_ERROR){
         if(ngx_errno != NGX_ENOENT){
-            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errono, "profiler: " ngx_file_info_n " failed on '%V'", path );
+            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_file_info_n " failed on '%V'", path );
             return NGX_ERROR;
         }
         if(ngx_create_dir(zpath, NGX_HTTP_PROFILER_DIR_ACCESS) == NGX_FILE_ERROR){
-            ngx_log_error(NGX_LOG_ERR, cf->log, ng_errno, "profiler: " ngx_create_dir_n " failed on '%V'", path);
+            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_create_dir_n " failed on '%V'", path);
             return NGX_ERROR;
         }        
     }else{
