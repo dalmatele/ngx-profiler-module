@@ -59,7 +59,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
 };
 
 static ngx_http_module_t ngx_http_profiler_module_ctx = {
-    ngx_http_profiler_preconf,                          /* preconfiguration */
+    ngx_http_profiler_preconf,     /* preconfiguration */
     NULL,                          /* postconfiguration */
 
     NULL,                          /* create main configuration */
@@ -79,7 +79,7 @@ ngx_module_t ngx_http_profiler_module = {
     NGX_HTTP_MODULE,
     NULL,
     NULL,                          /* init module */
-    NULL,        /* init process */
+    ngx_http_profiler_init,        /* init process */
     NULL,                          /* init thread */
     NULL,                          /* exit thread */
     NULL,                          /* exit process */
@@ -172,13 +172,13 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 // if(profiler_timer == NULL){
                 //     return NGX_CONF_ERROR;
                 // }    
-                profiler_timer->log = cf->log;
-                profiler_timer->data = NULL;
-                profiler_timer->handler = ngx_timer_fired;
+                // profiler_timer->log = cf->log;
+                // profiler_timer->data = NULL;
+                // profiler_timer->handler = ngx_timer_fired;
                 frequency = conf->freq; 
                 enable = 1; 
                 // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);              
-                ngx_add_timer(profiler_timer, frequency);                
+                // ngx_add_timer(profiler_timer, frequency);                
             }
         }
     }
