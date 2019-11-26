@@ -77,9 +77,9 @@ ngx_module_t ngx_http_profiler_module = {
     &ngx_http_profiler_module_ctx,
     ngx_http_profiler_commands,
     NGX_HTTP_MODULE,
-    NULL,
+    ngx_http_profiler_init,
     NULL,                          /* init module */
-    ngx_http_profiler_init,        /* init process */
+    NULL,        /* init process */
     NULL,                          /* init thread */
     NULL,                          /* exit thread */
     NULL,                          /* exit process */
