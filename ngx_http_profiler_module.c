@@ -156,9 +156,6 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     ngx_conf_merge_value(conf->profiler, prev->profiler, 0);
     ngx_conf_merge_msec_value(conf->freq, prev->freq, 60000);//Default: 10m
     ngx_conf_merge_str_value(conf->path, prev->path, "");
-    if(conf->profiler == 1 && conf->path.len == 0){        
-        return NGX_CONF_ERROR;
-    }
     //create dir        
     return NGX_CONF_OK;
 }
@@ -167,7 +164,7 @@ static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
     ngx_http_profiler_loc_conf_t *conf;
 
     conf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_profiler_module);
-
+    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on");
     if(conf == NULL || conf->profiler == 0){
         return NGX_ERROR;
     }
