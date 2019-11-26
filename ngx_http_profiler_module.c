@@ -27,6 +27,7 @@ typedef struct {
 
 static ngx_event_t      *profiler_timer;
 static ngx_msec_t       frequency;
+static ngx_uint_t       enable;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
@@ -173,7 +174,8 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 // profiler_timer->log = cf->log;
                 // profiler_timer->data = NULL;
                 // profiler_timer->handler = ngx_timer_fired;
-                frequency = conf->freq;  
+                frequency = conf->freq; 
+                enable = 1; 
                 // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);              
                 // ngx_add_timer(profiler_timer, frequency);                
             }
@@ -191,11 +193,12 @@ ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
 }
 
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){ 
-    ngx_log_error(NGX_LOG_ERR, cycle->log, 0, "profiler: timer %d", frequency);        
-    profiler_timer->log = cycle->log;
-    profiler_timer->data = NULL;
-    profiler_timer->handler = ngx_timer_fired;
-    frequency = 10000;                 
-    ngx_add_timer(profiler_timer, 10000); 
+    if(enable){
+        ngx_log_error(NGX_LOG_ERR, cycle->log, 0, "profiler: timer %d", frequency);        
+        profiler_timer->log = cycle->log;
+        profiler_timer->data = NULL;
+        profiler_timer->handler = ngx_timer_fired;              
+        ngx_add_timer(profiler_timer, frequency);         
+    }    
     return NGX_OK;
 }
