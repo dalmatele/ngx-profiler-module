@@ -14,6 +14,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
 void ngx_timer_fired(ngx_event_t *ev);
 static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle);
+ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf);
 
 typedef struct {    
     ngx_flag_t      profiler;
@@ -56,7 +57,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
 };
 
 static ngx_http_module_t ngx_http_profiler_module_ctx = {
-    NULL,                          /* preconfiguration */
+    ngx_http_profiler_preconf,                          /* preconfiguration */
     NULL,                          /* postconfiguration */
 
     NULL,                          /* create main configuration */
@@ -182,11 +183,15 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     return NGX_CONF_OK;
 }
 
-ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){
+ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
     profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
     if(profiler_timer == NULL){
-        return NGX_CONF_ERROR;
-    }    
+        return NGX_ERROR;
+    }
+    return NGX_OK
+}
+
+ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){       
     profiler_timer->log = cf->log;
     profiler_timer->data = NULL;
     profiler_timer->handler = ngx_timer_fired;
