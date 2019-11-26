@@ -13,6 +13,7 @@ static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf);
 static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child);
 void ngx_timer_fired(ngx_event_t *ev);
 static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
+static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf)
 
 typedef struct {    
     ngx_flag_t      profiler;
@@ -56,7 +57,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
 
 static ngx_http_module_t ngx_http_profiler_module_ctx = {
     NULL,                          /* preconfiguration */
-    NULL,                          /* postconfiguration */
+    ngx_http_profiler_postconfigure,                          /* postconfiguration */
 
     NULL,                          /* create main configuration */
     NULL,                          /* init main configuration */
@@ -158,7 +159,19 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     if(conf->profiler == 1 && conf->path.len == 0){        
         return NGX_CONF_ERROR;
     }
-    //create dir    
+    //create dir        
+    return NGX_CONF_OK;
+}
+
+static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
+    ngx_http_profiler_merge_loc_conf *conf;
+
+    conf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_profiler_module);
+
+    if(conf == NULL || conf->profiler == 0){
+        return NGX_ERR;
+    }
+
     //set timer to collect data
     // https://gist.github.com/hiboma/2863699
     // https://gist.github.com/samizdatco/1374529
@@ -172,5 +185,4 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     frequency = conf->freq;
     ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
     // ngx_add_timer(profiler_timer, conf->freq);
-    return NGX_CONF_OK;
 }
