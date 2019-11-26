@@ -12,6 +12,7 @@ static char* ngx_http_profiler(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf);
 static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child);
 void ngx_timer_fired(ngx_event_t *ev);
+static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
 
 typedef struct {    
     ngx_uint_t      profiler;
@@ -110,7 +111,7 @@ static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r){
 static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *path){    
     ngx_file_info_t                 fi;
     static u_char                   zpath[NGX_MAX_PATH + 1];
-    
+    ngx_set_errno(0);
     if(path->len + 1 > sizeof(zpath)){
         ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: too long path: %s", path->data);
         return NGX_ERROR;
