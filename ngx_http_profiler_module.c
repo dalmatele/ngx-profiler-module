@@ -169,10 +169,10 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
     if(profiler_timer == NULL){
         return NGX_ERROR;
-    }
-    profiler_timer.handler = ngx_timer_fired;
+    }    
     profiler_timer.log = cf->log;
     profiler_timer.data = NULL;
+    profiler_timer.handler = ngx_timer_fired;
     freq = conf->freq;
     ngx_add_timer(profiler_timer, conf->freq);
     return NGX_CONF_OK;
