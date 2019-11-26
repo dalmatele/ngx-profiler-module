@@ -208,7 +208,7 @@ ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){
 static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf){
     if(enable){
         ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);        
-        profiler_timer->log = cycle->log;
+        profiler_timer->log = cf->log;
         profiler_timer->data = NULL;
         profiler_timer->handler = ngx_timer_fired;              
         ngx_add_timer(profiler_timer, frequency);             
