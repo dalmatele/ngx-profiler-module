@@ -173,7 +173,8 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 profiler_timer->log = cf->log;
                 profiler_timer->data = NULL;
                 profiler_timer->handler = ngx_timer_fired;
-                frequency = conf->freq;                
+                frequency = conf->freq;  
+                ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", conf->freq);              
                 ngx_add_timer(profiler_timer, conf->freq);                
             }
         }
