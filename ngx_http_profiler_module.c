@@ -26,7 +26,6 @@ typedef struct {
 
 static ngx_event_t      *profiler_timer;
 static ngx_msec_t       frequency;
-static ngx_unit_t       enable;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
