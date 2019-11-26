@@ -26,6 +26,7 @@ typedef struct {
 
 static ngx_event_t      *profiler_timer;
 static ngx_msec_t       frequency;
+static ngx_unit_t       enable;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
@@ -157,29 +158,29 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     ngx_conf_merge_msec_value(conf->freq, prev->freq, 60000);//Default: 10m
     ngx_conf_merge_str_value(conf->path, prev->path, "");
     //create dir        
-    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: %d", conf->freq);
+    if(conf->profiler == 1){
+        if(conf->path.len != 0){
+            if(ngx_http_profiler_ensure_directory(cf, &conf->path) != NGX_OK){
+                return NGX_CONF_ERROR;
+            }else{
+                // //set timer to collect data
+                // https://gist.github.com/hiboma/2863699
+                // https://gist.github.com/samizdatco/1374529
+                profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
+                if(profiler_timer == NULL){
+                    return NGX_CONF_ERROR;
+                }    
+                profiler_timer->log = cf->log;
+                profiler_timer->data = NULL;
+                profiler_timer->handler = ngx_timer_fired;
+                frequency = conf->freq;
+                ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
+                ngx_add_timer(profiler_timer, conf->freq);                
+            }
+        }
+    }
     return NGX_CONF_OK;
 }
 
 static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
-    // ngx_http_profiler_loc_conf_t *conf;
-
-    // conf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_profiler_module);    
-    // if(conf == NULL || conf->profiler == 0){
-    //     return NGX_ERROR;
-    // }
-    // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
-    // //set timer to collect data
-    // // https://gist.github.com/hiboma/2863699
-    // // https://gist.github.com/samizdatco/1374529
-    // profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
-    // if(profiler_timer == NULL){
-    //     return NGX_CONF_ERROR;
-    // }    
-    // profiler_timer->log = cf->log;
-    // profiler_timer->data = NULL;
-    // profiler_timer->handler = ngx_timer_fired;
-    // frequency = conf->freq;
-    // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
-    // ngx_add_timer(profiler_timer, conf->freq);
 }
