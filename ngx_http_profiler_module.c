@@ -119,10 +119,11 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
     ngx_snprintf(zpath, sizeof(zpath), "%V%Z", path);
     if(ngx_file_info(zpath, &fi) == NGX_FILE_ERROR){
         if(ngx_errno != NGX_ENOENT){
-            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_file_info_n " failed on '%V'", path );
+            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_file_info_n " failed on '%V'", path);
             return NGX_ERROR;
         }
         if(ngx_create_dir(zpath, NGX_HTTP_PROFILER_DIR_ACCESS) == NGX_FILE_ERROR){
+            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: %s", path->data);
             ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_create_dir_n " failed on '%V'", path);
             return NGX_ERROR;
         }        
@@ -167,7 +168,6 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
         return NGX_CONF_ERROR;
     }
     //create dir
-    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: %s", conf->path.data);
     if(ngx_http_profiler_ensure_directory(cf, &conf->path) != NGX_OK){
         return NGX_CONF_ERROR;
     }
