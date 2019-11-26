@@ -193,10 +193,10 @@ ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
     return NGX_OK;
 }
 
-ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){ 
+ngx_int_t ngx_http_profiler_init(/*ngx_cycle_t *cycle*/ngx_log_t *log){ 
     if(enable){
-        ngx_log_error(NGX_LOG_ERR, cycle->log, 0, "profiler: timer %d", frequency);        
-        profiler_timer->log = cycle->log;
+        ngx_log_error(NGX_LOG_ERR, log, 0, "profiler: timer %d", frequency);        
+        profiler_timer->log = log;
         profiler_timer->data = NULL;
         profiler_timer->handler = ngx_timer_fired;              
         ngx_add_timer(profiler_timer, frequency);            
