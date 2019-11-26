@@ -188,7 +188,7 @@ ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
     if(profiler_timer == NULL){
         return NGX_ERROR;
     }
-    return NGX_OK
+    return NGX_OK;
 }
 
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){       
