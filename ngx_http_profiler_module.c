@@ -79,7 +79,7 @@ ngx_module_t ngx_http_profiler_module = {
     NGX_HTTP_MODULE,
     NULL,
     NULL,                          /* init module */
-    ngx_http_profiler_init,        /* init process */
+    NULL,        /* init process */
     NULL,                          /* init thread */
     NULL,                          /* exit thread */
     NULL,                          /* exit process */
@@ -172,13 +172,13 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 // if(profiler_timer == NULL){
                 //     return NGX_CONF_ERROR;
                 // }    
-                // profiler_timer->log = cf->log;
-                // profiler_timer->data = NULL;
-                // profiler_timer->handler = ngx_timer_fired;
+                profiler_timer->log = cf->log;
+                profiler_timer->data = NULL;
+                profiler_timer->handler = ngx_timer_fired;
                 frequency = conf->freq; 
                 enable = 1; 
                 // ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", frequency);              
-                // ngx_add_timer(profiler_timer, frequency);                
+                ngx_add_timer(profiler_timer, frequency);                
             }
         }
     }
@@ -194,13 +194,12 @@ ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
 }
 
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){ 
-    if(enable == 1){
+    if(enable){
         ngx_log_error(NGX_LOG_ERR, cycle->log, 0, "profiler: timer %d", frequency);        
         profiler_timer->log = cycle->log;
         profiler_timer->data = NULL;
         profiler_timer->handler = ngx_timer_fired;              
-        ngx_add_timer(profiler_timer, frequency); 
-        enable = 2;        
+        ngx_add_timer(profiler_timer, frequency);            
     }    
     return NGX_OK;
 }
