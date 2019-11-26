@@ -24,7 +24,7 @@ typedef struct {
 #define NGX_HTTP_PROFILER_DIR_ACCESS         0744
 
 static ngx_event_t      *profiler_timer;
-static ngx_msec_t       freq;
+static ngx_msec_t       frequency;
 
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
@@ -141,7 +141,7 @@ void ngx_timer_fired(ngx_event_t *ev){
     if(ngx_exiting){
         return;
     }
-    ngx_add_timer(ev, freq);
+    ngx_add_timer(ev, frequency);
 }
 
 static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf){
@@ -167,6 +167,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
         return NGX_CONF_ERROR;
     }
     //create dir
+    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: %s", conf->path.data);
     if(ngx_http_profiler_ensure_directory(cf, &conf->path) != NGX_OK){
         return NGX_CONF_ERROR;
     }
@@ -180,7 +181,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     profiler_timer->log = cf->log;
     profiler_timer->data = NULL;
     profiler_timer->handler = ngx_timer_fired;
-    freq = conf->freq;
+    frequency = conf->freq;
     ngx_add_timer(profiler_timer, conf->freq);
     return NGX_CONF_OK;
 }
