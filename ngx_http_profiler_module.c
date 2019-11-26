@@ -163,7 +163,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
     ngx_conf_merge_value(conf->profiler, prev->profiler, 0);
     ngx_conf_merge_msec_value(conf->freq, prev->freq, 60000);//Default: 10m
     ngx_conf_merge_str_value(conf->path, prev->path, "");
-    if(conf->profiler == 1 & conf->path.len == 0){        
+    if(conf->profiler == 1 && conf->path.len == 0){        
         return NGX_CONF_ERROR;
     }
     //create dir
