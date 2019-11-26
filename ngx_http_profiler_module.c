@@ -105,7 +105,7 @@ static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r){
     if(plcf == NULL || plcf->profiler == 0){
         return NGX_DECLINED;
     }
-
+    return NGX_OK;
 }
 
 static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *path){    
