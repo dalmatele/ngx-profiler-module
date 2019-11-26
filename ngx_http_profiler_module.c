@@ -30,7 +30,7 @@ static ngx_msec_t       frequency;
 static ngx_command_t    ngx_http_profiler_commands[] = {
     {
         ngx_string("system_profiler"),
-        NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
         ngx_http_profiler,
         NGX_HTTP_LOC_CONF_OFFSET,
         offsetof(ngx_http_profiler_loc_conf_t, profiler),
@@ -38,7 +38,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
     },
     {
         ngx_string("system_profiler_freq"),
-        NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
         ngx_conf_set_size_slot,
         NGX_HTTP_LOC_CONF_OFFSET,
         offsetof(ngx_http_profiler_loc_conf_t, freq),
@@ -46,7 +46,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
     },
     {
         ngx_string("system_profiler_path"),
-        NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
         ngx_conf_set_str_slot,
         NGX_HTTP_LOC_CONF_OFFSET,
         offsetof(ngx_http_profiler_loc_conf_t, path),
