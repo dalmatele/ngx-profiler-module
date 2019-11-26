@@ -8,6 +8,7 @@
 static char* ngx_http_profiler(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf);
 static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child);
+void ngx_timer_fired(ngx_event_t *ev);
 
 typedef struct {    
     ngx_uint_t      profiler;
