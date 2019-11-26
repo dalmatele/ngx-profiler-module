@@ -192,7 +192,7 @@ ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf){
 }
 
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){       
-    profiler_timer->log = cf->log;
+    profiler_timer->log = cycle->log;
     profiler_timer->data = NULL;
     profiler_timer->handler = ngx_timer_fired;
     frequency = 10000;                 
