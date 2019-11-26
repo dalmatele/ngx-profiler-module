@@ -2,6 +2,10 @@ ngx_module_type=HTTP
 ngx_module_name=ngx_http_profiler_module
 
 ngx_module_srcs="$ngx_addon_dir/ngx_http_profiler_module.c"
-
-.auto/module
-ngx_addon_name=$ngx_module_name
+if [ -f auto/module ] ; then
+    ngx_addon_name=$ngx_module_name
+    . auto/module
+else
+    HTTP_MODULES="$HTTP_MODULES $ngx_module_name"
+    CFLAGS="$CFLAGS -I$ngx_addon_dir"
+fi
