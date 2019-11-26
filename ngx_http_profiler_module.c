@@ -169,7 +169,7 @@ static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf){
     conf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_profiler_module);
 
     if(conf == NULL || conf->profiler == 0){
-        return NGX_ERR;
+        return NGX_ERROR;
     }
 
     //set timer to collect data
