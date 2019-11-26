@@ -16,7 +16,6 @@ static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
 ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle);
 ngx_int_t ngx_http_profiler_preconf(ngx_conf_t *cf);
 static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf);
-static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf);
 
 typedef struct {    
     ngx_flag_t      profiler;
@@ -80,7 +79,7 @@ ngx_module_t ngx_http_profiler_module = {
     NGX_HTTP_MODULE,
     NULL,
     NULL,                          /* init module */
-    ngx_http_profiler_init,        /* init process */
+    NULL,        /* init process */
     NULL,                          /* init thread */
     NULL,                          /* exit thread */
     NULL,                          /* exit process */
@@ -206,6 +205,10 @@ ngx_int_t ngx_http_profiler_init(ngx_cycle_t *cycle){
 }
 
 static ngx_int_t ngx_http_profiler_postconf(ngx_conf_t *cf){
-    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", enable);
+    ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: timer %d", enable);      
+    profiler_timer->log = cf->log;
+    profiler_timer->data = NULL;
+    profiler_timer->handler = ngx_timer_fired;              
+    ngx_add_timer(profiler_timer, 10000);    
     return NGX_OK;
 }
