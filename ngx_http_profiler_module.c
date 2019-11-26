@@ -44,14 +44,6 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
         NULL
     },
     {
-        ngx_string("system_profiler_freq"),
-        NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
-        ngx_conf_set_size_slot,
-        NGX_HTTP_LOC_CONF_OFFSET,
-        offsetof(ngx_http_profiler_loc_conf_t, freq),
-        NULL
-    },
-    {
         ngx_string("system_profiler_path"),
         NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
         ngx_conf_set_str_slot,
@@ -122,8 +114,7 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
             ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_file_info_n " failed on '%V'", path);
             return NGX_ERROR;
         }
-        if(ngx_create_dir(zpath, NGX_HTTP_PROFILER_DIR_ACCESS) == NGX_FILE_ERROR){
-            ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: %s", path->data);
+        if(ngx_create_dir(zpath, NGX_HTTP_PROFILER_DIR_ACCESS) == NGX_FILE_ERROR){            
             ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno, "profiler: " ngx_create_dir_n " failed on '%V'", path);
             return NGX_ERROR;
         }        
