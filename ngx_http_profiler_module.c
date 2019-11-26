@@ -131,6 +131,7 @@ static ngx_int_t ngx_http_profiler_ensure_directory(ngx_conf_t *cf, ngx_str_t *p
 // https://www.nginx.com/resources/wiki/extending/api/event/
 void ngx_timer_fired(ngx_event_t *ev){        
     ngx_log_error(NGX_LOG_ERR, ev->log, 0, "Event fired!");
+    fprintf(stderr, "[%d] %s\n", getpid(), __FUNCTION__);
     if(ngx_exiting){
         return;
     }
@@ -172,8 +173,7 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
                 profiler_timer->log = cf->log;
                 profiler_timer->data = NULL;
                 profiler_timer->handler = ngx_timer_fired;
-                frequency = conf->freq;
-                ngx_log_error(NGX_LOG_ERR, cf->log, 0, "profiler: failed on '%s'", conf->path.data);
+                frequency = conf->freq;                
                 ngx_add_timer(profiler_timer, conf->freq);                
             }
         }
