@@ -57,7 +57,7 @@ static ngx_command_t    ngx_http_profiler_commands[] = {
 
 static ngx_http_module_t ngx_http_profiler_module_ctx = {
     NULL,                          /* preconfiguration */
-    ngx_http_profiler_postconfigure,                          /* postconfiguration */
+    NULL,                          /* postconfiguration */
 
     NULL,                          /* create main configuration */
     NULL,                          /* init main configuration */
