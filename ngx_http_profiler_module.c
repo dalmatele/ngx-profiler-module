@@ -13,7 +13,7 @@ static void * ngx_http_profiler_create_loc_conf(ngx_conf_t *cf);
 static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child);
 void ngx_timer_fired(ngx_event_t *ev);
 static ngx_int_t ngx_http_profiler_handler(ngx_http_request_t *r);
-static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf)
+static ngx_int_t ngx_http_profiler_postconfigure(ngx_conf_t *cf);
 
 typedef struct {    
     ngx_flag_t      profiler;
