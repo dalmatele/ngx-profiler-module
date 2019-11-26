@@ -164,6 +164,12 @@ static char* ngx_http_profiler_merge_loc_conf(ngx_conf_t *cf, void *parent, void
         return NGX_CONF_ERROR;
     }
     //set timer to collect data
+    // https://gist.github.com/hiboma/2863699
+    // https://gist.github.com/samizdatco/1374529
+    profiler_timer = ngx_pcalloc(cf->pool, sizeof(ngx_event_t));
+    if(profiler_timer == NULL){
+        return NGX_ERROR;
+    }
     profiler_timer.handler = ngx_timer_fired;
     profiler_timer.log = cf->log;
     profiler_timer.data = NULL;
